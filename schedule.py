@@ -3,7 +3,7 @@ import sqlite3, new_user # Импорт модуля для работы с ба
 
 
 def result_for_bottom(group, day, from_id): # Результат для нижней дня нижней недели
-    connaction = sqlite3.connect('mysite//data//data.sqlite3')
+    connaction = sqlite3.connect('Bot-helper//data//data.sqlite3')
     #connaction = sqlite3.connect('data//data.sqlite3')
     cursor = connaction.cursor()
     cursor.execute("SELECT {0} FROM {1};".format(day, group))
@@ -12,7 +12,7 @@ def result_for_bottom(group, day, from_id): # Результат для нижн
     return result # Возвращается список результата
 
 def result_for_top(group, day, from_id): # Результат для нижней дня верхней недели
-    connaction = sqlite3.connect('mysite//data//data.sqlite3')
+    connaction = sqlite3.connect('Bot-helper//data//data.sqlite3')
     #connaction = sqlite3.connect('data//data.sqlite3')
     cursor = connaction.cursor()
     cursor.execute("SELECT {0} FROM {1} ;".format(day, group))

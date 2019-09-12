@@ -2,7 +2,7 @@ import sqlite3 # Импортируем модуль для работы с ба
 
 def add_user(from_id, group_number): # функция добавления незарегистрированного пользователя в базу данных с помощью SQL-запросов через его id и номер группы, который он указал
     print("Создание пользователя...")
-    connaction = sqlite3.connect("mysite//data//data.sqlite3")
+    connaction = sqlite3.connect("Bot-helper//data//data.sqlite3")
     cursor = connaction.cursor()
     cursor.execute("SELECT COUNT (vk_id) FROM students")
     result = cursor.fetchall()
@@ -18,7 +18,7 @@ def add_user(from_id, group_number): # функция добавления не�
 
 
 def is_auth(from_id): # Функция проверки на присутствие пользователя в базе данных через его id ВКонтакте. Возвращает True, если пользователь авторизован, False - в обратном случае
-    connaction = sqlite3.connect("mysite//data//data.sqlite3")
+    connaction = sqlite3.connect("Bot-helper//data//data.sqlite3")
     cursor = connaction.cursor()
     cursor.execute("SELECT id FROM students WHERE vk_id = @1", [from_id])
     result = cursor.fetchall()
@@ -32,7 +32,7 @@ def is_auth(from_id): # Функция проверки на присутств�
 
 
 def check_group_member(from_id): # Проверка на то, какой группе пренадлежит пользователь через его id ВКонтакте
-    connaction = sqlite3.connect("mysite//data//data.sqlite3", timeout=10)
+    connaction = sqlite3.connect("Bot-helper//data//data.sqlite3", timeout=10)
     cursor = connaction.cursor()
     cursor.execute("SELECT gr_id FROM students WHERE vk_id = {0}".format(from_id))
     result = cursor.fetchall()
@@ -41,7 +41,7 @@ def check_group_member(from_id): # Проверка на то, какой гру
 
 def change_group(from_id, new_group): # Функция смены группы в случае ошибки введенных данных, через id ВКонтакте и номер введенной группы
     if str(check_group_member(from_id)) != str(new_group):
-        connaction = sqlite3.connect("mysite//data//data.sqlite3")
+        connaction = sqlite3.connect("Bot-helper//data//data.sqlite3")
         cursor = connaction.cursor()
         cursor.execute("UPDATE students SET gr_id = {0} WHERE vk_id = {1}".format(new_group, from_id))
         connaction.commit()
