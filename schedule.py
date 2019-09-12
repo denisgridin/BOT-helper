@@ -25,11 +25,10 @@ def get_message(day, text, from_id): # Функция для составлен�
     group = "g_" + str(new_user.check_group_member(from_id))
     if text[-1:] in keys_bottom or text[-6:] in keys_bottom:
         day = day + "_bot"
-        result, count = result_for_bottom(group, day, from_id)
+        result = result_for_bottom(group, day, from_id)
     elif text[-1:] in keys_top or text[-7:] in keys_top:
         day = day + "_top"
-        result, count = result_for_top(group, day, from_id)
-    count = int(count[0][0])
+        result = result_for_top(group, day, from_id)
     message = "Расписание по запросу:  " + text + '\n'
     time = ['8:00-9:35', '9:50-11:25', '11:55-13:30', '13:45-15:20', '15:50-17:25', '17:40-19:15']
     i = 0
