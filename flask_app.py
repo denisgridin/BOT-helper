@@ -46,7 +46,7 @@ def processing(): # Главная функция
             else:
                 message, attachment  = Message.create_message(text, from_id)
                 print(message)
-            api.messages.send(access_token=token, chat_id=str(chat_id), random_id=random_id, message=message, attachment = attachment, peer_id = str(chat_id))
+            api.messages.send(access_token=token, chat_id=str(chat_id), random_id=random_id, message=message, attachment = attachment)
         # Обработка запроса, если сообщение пришло из личных сообщений    
         elif is_conversation == False :
             from_id = data['object']['from_id']
