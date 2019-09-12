@@ -31,6 +31,7 @@ def processing(): # Главная функция
         menu = ['календарь', 'помощь', 'меню'] # Кортеж для разделов меню
         need_auth = ['сегодня', 'неделя'] # Кортеж элементов, при которых нужна регистрация в базе данных
         # Обработка запроса, если сообщение пришло из беседы
+		#peer_id, user_id, domain, chat_id or user_ids
         if "бот," in text:
             text = text[5:]
             global peer_id, chat_id
@@ -45,7 +46,7 @@ def processing(): # Главная функция
             else:
                 message, attachment  = Message.create_message(text, from_id)
                 print(message)
-            api.messages.send(access_token=token, chat_id=str(chat_id), random_id=random_id, message=message, attachment = attachment)
+            api.messages.send(access_token=token, chat_id=str(chat_id), random_id=random_id, message=message, attachment = attachment, peer_id = str(chart_id))
         # Обработка запроса, если сообщение пришло из личных сообщений    
         elif is_conversation == False :
             from_id = data['object']['from_id']
@@ -57,19 +58,19 @@ def processing(): # Главная функция
                     if new_user.is_auth(from_id) == False:
                         message = "Пожалуйста, введи номер группы, как показано в примере. Например: Группа 1.1"
                         print("Пожалуйста, введи номер группы, как показано в примере. Например: Группа 1.1")
-                        api.messages.send(access_token=token, from_id=str(from_id), random_id=random_id, message=message, attachment = attachment)
+                        api.messages.send(access_token=token, from_id=str(from_id), random_id=random_id, message=message, attachment = attachment, peer_id = str(from_id), user_id=str(from_id), domain='', user_ids=[from_id])
                     else:
                         kboard = make_kboard.create_kboard(text)
-                        api.messages.send(access_token=token, from_id=str(from_id), random_id=random_id, message=message, attachment = attachment )
+                        api.messages.send(access_token=token, from_id=str(from_id), random_id=random_id, message=message, attachment = attachment, keyboard = kboard, peer_id = str(from_id), user_id=str(from_id), domain='', user_ids=[from_id] )
                         print("Получение расписания")
                 elif text == 'помощь':
                     message = 'Почитай обо мне в этой статье!'
                     attachment = 'wall-171055937_21'
                     kboard = make_kboard.create_kboard('меню')
-                    api.messages.send(access_token=token, from_id=str(from_id), random_id=random_id, message=message, attachment = attachment)
+                    api.messages.send(access_token=token, from_id=str(from_id), random_id=random_id, message=message, attachment = attachment, keyboard = kboard, peer_id = str(from_id), user_id=str(from_id), domain='', user_ids=[from_id])
                 else:
                     kboard = make_kboard.create_kboard(text)
-                    api.messages.send(access_token=token, from_id=str(from_id), random_id=random_id, message=message, attachment = attachment )
+                    api.messages.send(access_token=token, from_id=str(from_id), random_id=random_id, message=message, attachment = attachment, keyboard = kboard, peer_id = str(from_id), user_id=str(from_id), domain='', user_ids=[from_id] )
 
             elif 'группа' in text:
                 if new_user.is_auth(from_id) == False:
@@ -78,12 +79,12 @@ def processing(): # Главная функция
                     message = "Спасибо, вы успешно внесены в базу"
                     kboard = make_kboard.create_kboard('меню')
                     print(message)
-                    api.messages.send(access_token=token, from_id=str(from_id), random_id=random_id, message=message, attachment = attachment )
+                    api.messages.send(access_token=token, from_id=str(from_id), random_id=random_id, message=message, attachment = attachment, keyboard = kboard, peer_id = str(from_id), user_id=str(from_id), domain='', user_ids=[from_id] )
                 else:
                     message = "Вы уже в базе"
                     kboard = make_kboard.create_kboard('меню')
                     print(message)
-                    api.messages.send(access_token=token, from_id=str(from_id), random_id=random_id, message=message, attachment = attachment )
+                    api.messages.send(access_token=token, from_id=str(from_id), random_id=random_id, message=message, attachment = attachment, keyboard = kboard, peer_id = str(from_id), user_id=str(from_id), domain='', user_ids=[from_id] )
             elif Message.check_sched(text) == True:
                 print("Есть контакт")
                 if new_user.is_auth(from_id) == True:
@@ -91,13 +92,13 @@ def processing(): # Главная функция
                         message, attachment  = Message.create_message(text, from_id)
                         kboard = make_kboard.create_kboard('календарь')
                         print(message)
-                        api.messages.send(access_token=token, from_id=str(from_id), random_id=random_id, message=message, attachment = attachment)
+                        api.messages.send(access_token=token, from_id=str(from_id), random_id=random_id, message=message, attachment = attachment, keyboard = kboard, peer_id = str(from_id), user_id=str(from_id), domain='', user_ids=[from_id])
                     except:
                         message = "Нет данных для вашей группы"
                         attachment = ""
                         kboard = make_kboard.create_kboard('меню')
                         print(message)
-                        api.messages.send(access_token=token, from_id=str(from_id), random_id=random_id, message=message, attachment = attachment)
+                        api.messages.send(access_token=token, from_id=str(from_id), random_id=random_id, message=message, attachment = attachment, keyboard = kboard, peer_id = str(from_id), user_id=str(from_id), domain='', user_ids=[from_id])
                 else:
                     message = "Пожалуйста, введи номер группы, как показано в примере. Например: Группа 1.1"
                     attachment = ''
@@ -108,8 +109,7 @@ def processing(): # Главная функция
                 print("Другой запрос")
                 kboard = make_kboard.create_kboard('меню')
                 message, attachment = Message.create_message(text, from_id)
-                api.messages.send(access_token=token, from_id=str(from_id), random_id=random_id, message=message, attachment = attachment )
+                api.messages.send(access_token=token, from_id=str(from_id), random_id=random_id, message=message, attachment = attachment, keyboard = kboard, peer_id = str(from_id), user_id=str(from_id), domain='', user_ids=[from_id] )
     return 'ok' # Возвращаемое значение всегда должно быть 'ok' - иначе возникнет ошибка
-
     #api.messages.send() - метод отправки сообщений
     #api.messages.getConversationMembers() - метод получения участников беседы, в которой произошел запрос
